@@ -4,6 +4,7 @@ var _ = require('underscore');
 
 var token = process.env.SLACK_API_TOKEN || '';
 var rtm = new RtmClient(token, {logLevel: 'info'});
+
 rtm.start();
 
 var CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
@@ -25,6 +26,7 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
     });
     rtm.sendMessage(text, message.channel);
   }
+
   if(isTum(user) && text == 'hi, pigbot!'){
     rtm.sendMessage('hi, tum!', message.channel);
   }
