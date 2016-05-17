@@ -25,10 +25,21 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
     });
     rtm.sendMessage(text, message.channel);
   }
+  if(isTum(user) && text == 'hi, pigbot!'){
+    rtm.sendMessage('hi, tum!', message.channel);
+  }
 });
 
 var isPickett = function(user){
   if(user == process.env.PICKETT_SLACK_ID){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+var isTum = function(user){
+  if(user == process.env.TUM_SLACK_ID){
     return true;
   }else{
     return false;
