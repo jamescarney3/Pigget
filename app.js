@@ -17,16 +17,20 @@ var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
   var text = message.text;
   var user = message.user;
-  var ckRegs = {gg: /ck/g, gG: /cK/g, Gg: /Ck/g, GG: /CK/g}
+  var ckRegs = {gg: /ck/g, gG: /cK/g, Gg: /Ck/g, GG: /CK/g};
 
   if(_.any(ckRegs, function(v, k){ return text.match(v); }) && isPickett(user)){
     _.each(ckRegs, function(v, k){
       text = text.replace(v, k);
-    })
+    });
     rtm.sendMessage(text, message.channel);
   }
 });
 
 var isPickett = function(user){
-  return user == process.env.PICKETT_SLACK_ID
+  if(user == process.env.PICKETT_SLACK_ID){
+    return true;
+  }else{
+    return false;
+  }
 }
