@@ -4,9 +4,7 @@ var RtmClient = require('@slack/client').RtmClient;
 var request = require('request');
 var _ = require('underscore');
 var querystring = require('querystring');
-var keys = require('./keys.js');
-
-console.log(keys);
+var keys = require('./keys.js').keys;
 
 var token = keys.SLACK_API_TOKEN;
 var ckRegs = {gg: /ck/g, gG: /cK/g, Gg: /Ck/g, GG: /CK/g};
@@ -40,7 +38,7 @@ exports.handler = (event, context, callback) => {
 
   rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
     const message = querystring.parse(event);
-    const text = message.text;
+    let text = message.text;
     const user = message.user_id;
     const channel = message.channel_id;
 
@@ -50,9 +48,9 @@ exports.handler = (event, context, callback) => {
       });
     } else if (_.any(ckRegs, function(v, k){ return text.match(v); }) && isPickett(user)){
       _.each(ckRegs, function(v, k){
-        reply = text.replace(v, k);
+        text = text.replace(v, k);
       });
-      rtm.sendMessage(reply, channel, function(){
+      rtm.sendMessage(text, channel, function(){
         process.exit(0);
       });
     } else {
