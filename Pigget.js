@@ -37,8 +37,10 @@ exports.handler = (event, context, callback) => {
   });
 
   rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
-    const message = querystring.parse(event);
+    const message = querystring.parse(event.postBody);
     let text = message.text;
+    console.log(event);
+    console.log(message);
     const user = message.user_id;
     const channel = message.channel_id;
 
